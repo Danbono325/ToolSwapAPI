@@ -133,6 +133,21 @@
         }
 
         // Update listing as completed
+        public function updateAsComplete($listingID){
+            $query = "UPDATE listings SET completed = 1 WHERE idlistings= $listingID";
+
+            $stmt = $this->conn->prepare($query);
+
+            // Execute Query
+            if($stmt->execute()){
+                return true;
+            }
+
+            //Print error if something goes wrong
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+        }
 
         // Delete Listing
         public function delete($listingID){
