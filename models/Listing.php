@@ -61,26 +61,24 @@
         }
 
         // Create Listing
-        public function create(){
-            $query = "CALL CreateListing(?, ?, ?, ?, ?, ?, ?);";
+        public function create($userID){
+            $query = "CALL CreateListing(:curUser, :title, :description, :days, :weeks, :months, :years);";
 
             $stmt = $this->conn->prepare($query);
 
             //Clean data
             $this->title = htmlspecialchars(strip_tags($this->title));
             $this->description = htmlspecialchars(strip_tags($this->description));
-            // $this->email = htmlspecialchars(strip_tags($this->email));
-            // $this->firstname = htmlspecialchars(strip_tags($this->firstname));
-            // $this->lastname = htmlspecialchars(strip_tags($this->lastname));
+            
 
             //Bind data
-            $stmt->bindParam(1, $this->userID, PDO::PARAM_INT);
-            $stmt->bindParam(2, $this->title, PDO::PARAM_STR, 45);
-            $stmt->bindParam(3, $this->description, PDO::PARAM_STR, 6,000);
-            $stmt->bindParam(4, $this->expectedDays, PDO::PARAM_INT);
-            $stmt->bindParam(5, $this->expectedWeeks, PDO::PARAM_INT);
-            $stmt->bindParam(6, $this->expectedMonths, PDO::PARAM_INT);
-            $stmt->bindParam(7, $this->expectedYears, PDO::PARAM_INT);
+            $stmt->bindParam(':curUser', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':title', $this->title, PDO::PARAM_STR, 45);
+            $stmt->bindParam(':description', $this->description, PDO::PARAM_STR, 6,000);
+            $stmt->bindParam(':days', $this->expectedDays, PDO::PARAM_INT);
+            $stmt->bindParam(':weeks', $this->expectedWeeks, PDO::PARAM_INT);
+            $stmt->bindParam(':months', $this->expectedMonths, PDO::PARAM_INT);
+            $stmt->bindParam(':years', $this->expectedYears, PDO::PARAM_INT);
 
 
             // Execute Query
