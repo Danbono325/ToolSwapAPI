@@ -113,13 +113,13 @@
             $this->description = htmlspecialchars(strip_tags($this->description));
 
             //Bind data
-            $stmt->bindParam(1, $this->userID, PDO::PARAM_INT);
-            $stmt->bindParam(2, $this->title, PDO::PARAM_STR, 45);
-            $stmt->bindParam(3, $this->description, PDO::PARAM_STR, 6,000);
-            $stmt->bindParam(4, $this->expectedDays, PDO::PARAM_INT);
-            $stmt->bindParam(5, $this->expectedWeeks, PDO::PARAM_INT);
-            $stmt->bindParam(6, $this->expectedMonths, PDO::PARAM_INT);
-            $stmt->bindParam(7, $this->expectedYears, PDO::PARAM_INT);
+            //$stmt->bindParam(1, $this->userID, PDO::PARAM_INT);
+            $stmt->bindParam(":title", $this->title, PDO::PARAM_STR, 45);
+            $stmt->bindParam(":description", $this->description, PDO::PARAM_STR, 6,000);
+            $stmt->bindParam(":expectedDays", $this->expectedDays, PDO::PARAM_INT);
+            $stmt->bindParam(":expectedWeeks", $this->expectedWeeks, PDO::PARAM_INT);
+            $stmt->bindParam(":expectedMonths", $this->expectedMonths, PDO::PARAM_INT);
+            $stmt->bindParam(":expectedYears", $this->expectedYears, PDO::PARAM_INT);
 
             // Execute Query
             if($stmt->execute()){

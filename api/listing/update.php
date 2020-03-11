@@ -16,7 +16,8 @@
     $conn = $database->dbConnection();
 
     //Instantiate listing object
-    $user = new User($conn);
+    $listing = new Listing($conn);
+
 
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['listing_id']))
@@ -46,8 +47,9 @@
     $listing->expectedMonths = $data->expectedMonths;
     $listing->expectedYears = $data->expectedYears;
 
+
     // Update listing
-    if($user->update($listingID)){
+    if($listing->update($listingID)){
         echo json_encode(
             array('Message'=>'Listing Updated')
         );
