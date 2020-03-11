@@ -10,20 +10,20 @@
 
 
     include_once '../../config/Database.php';
-    include_once '../../models/Listing.php';
+    include_once '../../models/Review.php';
 
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate listing object
-    $listing = new Listing($conn);
+    //Instantiate review object
+    $review = new Review($conn);
 
 
     // CHECK GET ID PARAMETER OR NOT
-    if(isset($_GET['listing_id']))
+    if(isset($_GET['review_id']))
     {
         //IF HAS ID PARAMETER
-        $listingID = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+        $reviewID = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'listing',
                 'min_range' => 1
@@ -31,31 +31,25 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found with listing id '.$listingID));
+        echo json_encode(array('message' => 'No Review foun with id '.$reviewID));
     }
 
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    // Set ID to update
-    //$user->user_id = $data->user_id;
+    $review->expectationScore = $data->expectationScore;
+    $review->timeframeScore = $data->timeframeScore;
+    $review->budgetScore = $data->budgetScore;
+    $review->description = $data->description;
 
-    $listing->title = $data->title;
-    $listing->description = $data->description;
-    $listing->expectedDays = $data->expectedDays;
-    $listing->expectedWeeks = $data->expectedWeeks;
-    $listing->expectedMonths = $data->expectedMonths;
-    $listing->expectedYears = $data->expectedYears;
-
-
-    // Update listing
-    if($listing->update($listingID)){
+    // Update review
+    if($review->update($reviewID)){
         echo json_encode(
-            array('Message'=>'Listing Updated')
+            array('Message'=>'Review Updated')
         );
     } else {
         echo json_encode(
-            array('Message'=> 'Listing not Updated')
+            array('Message'=> 'Review not Updated')
         );
     }
 ?>
