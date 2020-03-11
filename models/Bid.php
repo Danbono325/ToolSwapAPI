@@ -70,7 +70,35 @@
 
 
         // Get all bids on a Listing
+        public function readListingBids($listingID) {
+            $query = "SELECT * FROM bids b 
+                        JOIN bid_listing bl ON bl.bids_idbids = b.idbids 
+                        WHERE bl.listings_idlistings = $listingID;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         // Get all bids by a user
+        public function readUsersBids($userID) {
+            $query = "SELECT * FROM bids b 
+                    JOIN bid_listing bl ON bl.bids_idbids = b.idbids 
+                    WHERE bl.users_idusers = $userID;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         // Update a Bid
         // Delete a Bid
 
