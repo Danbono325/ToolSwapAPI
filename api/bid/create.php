@@ -10,13 +10,13 @@
 
 
     include_once '../../config/Database.php';
-    include_once '../../models/Listing.php';
+    include_once '../../models/Bid.php';
 
     $database = new Database();
     $conn = $database->dbConnection();
 
     //Instantiate user object
-    $listing = new Listing($conn);
+    $bid = new Bid($conn);
 
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
@@ -27,30 +27,38 @@
             ]
         ]);
 
+        if(isset($_GET['listing_id'])){
+           //IF HAS ID PARAMETER
+           $listingID = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+               'options' => [
+                   'default' => 'listing',
+                   'min_range' => 1
+               ]
+           ]);
+       }
     }
     else {
-        echo json_encode(array('message' => 'No Listing Found with user id '.$userID));
+        echo json_encode(array('message' => 'No Listing Found with user id '.$userID." and listing id ".$listingID));
     }
 
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    $listing->title = $data->title;
-    $listing->description = $data->description;
-    $listing->expectedDays = $data->expectedDays;
-    $listing->expectedWeeks = $data->expectedWeeks;
-    $listing->expectedMonths = $data->expectedMonths;
-    $listing->expectedYears = $data->expectedYears;
+    
+    $bid->amount = $data->amount;
+    $bid->estimatedTimeDays = $data->estimatedTimeDays;
+    $bid->estimatedTimeWeeks = $data->estimatedTimeWeeks;
+    $bid->estimatedTimeMonths = $data->estimatedTimeMonths;
+    $bid->estimatedTimeYears = $data->estimatedTimeYears;
+    $bid->message = $data->message;
 
-
-    if($listing->create($userID)){
+    if($bid->create($userID, $listingID)){
         echo json_encode(
-            array('Message'=>'Listing Created')
+            array('Message'=>'Bid Created')
         );
     } else {
         echo json_encode(
-            array('Message'=> 'Listing not Created')
+            array('Message'=> 'Bid not Created')
         );
     }
 ?>
-

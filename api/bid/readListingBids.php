@@ -8,12 +8,12 @@
 
 
     include_once '../../config/Database.php';
-    include_once '../../models/Listing.php';
+    include_once '../../models/Bid.php';
 
     $database = new Database();
     $conn = $database->dbConnection();
 
-    $listing = new Listing($conn);
+    $bid = new Bid($conn);
 
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['listing_id']))
@@ -27,36 +27,35 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found for listing '.$listingID));
+        echo json_encode(array('message' => 'No Listings Found for user '.$listingID));
     }
 
-    //User Query
-    $result = $listing->readListing($listingID);
+    // Bids Query
+    $result = $bid->readListingBids($listingID);
 
     $num = $result->rowCount();
 
-    //$userListings = array();
-    $listingsData['data'] = array();
+    $bidsData['data'] = array();
 
     if($num > 0){
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
             extract($row);
 
-            $listingItem = array(
-                'listingID' => $idlistings,
-                'title' => $title,
-                'description' => $description,
-                'expectedDays' => $expectedDays,
-                'expectedWeeks' => $expectedWeeks,
-                'expectedMonths' => $expectedMonths,
-                'expectedYears' => $expectedYears,
-                'completed' => $completed
+            $bidItem = array(
+                'bidID' => $idbids,
+                'userID' => $users_idusers,
+                'amount' => $amount,
+                'estimatedTimeDays' => $estimatedTimeDays,
+                'estimatedTimeWeeks' => $estimatedTimeWeeks,
+                'estimatedTimeMonths' => $estimatedTimeMonths,
+                'estimatedTimeYears' => $estimatedTimeYears,
+                'message' => $message
             );
-            array_push($listingsData['data'], $listingItem);
+            array_push($bidsData['data'], $bidItem);
         }
-        echo json_encode($listingsData);
+        echo json_encode($bidsData);
     } else {
-        //No Listing Found
-        echo json_encode(array('message' => 'No Listings Found'));
+        //No Bids Found
+        echo json_encode(array('message' => 'No Bids Found'));
     }
 ?>
