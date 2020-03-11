@@ -15,10 +15,9 @@
             $this->conn = $db;
         }    
         
-        // Get all reviews on a user
-        // Create Listing
+        // Create Review
         public function create($userID, $listingID){
-            $query = "CALL CreateReview(?, ?, ?, ?, ?, ?);";
+            $query = "CALL CreateReview(:curUser, :curListing, :expScore, :tfScore, :bScore, :descrip);";
 
             $stmt = $this->conn->prepare($query);
 
@@ -29,12 +28,12 @@
             $this->description = htmlspecialchars(strip_tags($this->description));
 
             //Bind data
-            $stmt->bindParam(1, $userID, PDO::PARAM_INT);
-            $stmt->bindParam(2, $listingID, PDO::PARAM_INT);
-            $stmt->bindParam(3, $this->expectationScore, PDO::PARAM_STR, 3);
-            $stmt->bindParam(4, $this->timeframeScore, PDO::PARAM_STR, 3);
-            $stmt->bindParam(5, $this->budgetScore, PDO::PARAM_STR, 3);
-            $stmt->bindParam(6, $this->description, PDO::PARAM_STR, 6,000);
+            $stmt->bindParam(':curUser', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':curListing', $listingID, PDO::PARAM_INT);
+            $stmt->bindParam(':expScore', $this->expectationScore, PDO::PARAM_STR, 3);
+            $stmt->bindParam(':tfScore', $this->timeframeScore, PDO::PARAM_STR, 3);
+            $stmt->bindParam(':bScore', $this->budgetScore, PDO::PARAM_STR, 3);
+            $stmt->bindParam(':descrip', $this->description, PDO::PARAM_STR, 6,000);
 
 
             // Execute Query
@@ -46,6 +45,21 @@
             printf("Error: %s.\n", $stmt->error);
 
             return false;
+        }
+
+        // Get all reviews on a user
+        public function readUsersReviews($userID) {
+            $query = "SELECT * FROM reviews r 
+                        JOIN listings_reviews lr ON lr.reviews_idreviews = r.idreviews 
+                        WHERE lr.users_idusers=$userID;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
         }
 
         // Get all reviews on a listing
