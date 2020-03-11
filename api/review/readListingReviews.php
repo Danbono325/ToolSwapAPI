@@ -8,12 +8,12 @@
 
 
     include_once '../../config/Database.php';
-    include_once '../../models/Listing.php';
+    include_once '../../models/Review.php';
 
     $database = new Database();
     $conn = $database->dbConnection();
 
-    $listing = new Listing($conn);
+    $review = new Review($conn);
 
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['listing_id']))
@@ -27,36 +27,31 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found for listing'.$listing_id));
+        echo json_encode(array('message' => 'No Listing Found for listing '.$listing_id));
     }
 
-    //User Query
-    $result = $listing->readListing($listingID);
+    //Review Query
+    $result = $review->readListingReviews($listingID);
 
     $num = $result->rowCount();
 
-    //$userListings = array();
-    $listingsData['data'] = array();
+    $reviewsData['data'] = array();
 
     if($num > 0){
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
             extract($row);
 
-            $listingItem = array(
-                'listingID' => $idlistings,
-                'title' => $title,
-                'description' => $description,
-                'expectedDays' => $expectedDays,
-                'expectedWeeks' => $expectedWeeks,
-                'expectedMonths' => $expectedMonths,
-                'expectedYears' => $expectedYears,
-                'completed' => $completed
+            $reviewItem = array(
+                'expectationScore' => $expectationScore,
+                'timeframeScore' => $timeframeScore,
+                'budgetScore' => $budgetScore,
+                'description' => $description
             );
-            array_push($listingsData['data'], $listingItem);
+            array_push($reviewsData['data'], $reviewItem);
         }
-        echo json_encode($listingsData);
+        echo json_encode($reviewsData);
     } else {
-        //No Listing Found
-        echo json_encode(array('message' => 'No Listings Found'));
+        //No Listings Found
+        echo json_encode(array('message' => 'No Reviews Found'));
     }
 ?>

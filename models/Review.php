@@ -63,7 +63,20 @@
         }
 
         // Get all reviews on a listing
+        public function readListingReviews($listingID) {
+            $query = "SELECT * FROM reviews r 
+                        JOIN listings_reviews lr ON lr.reviews_idreviews = r.idreviews 
+                        WHERE lr.listings_idlistings = $listingID;";
         
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         // Delete a Review
         // Update a Review
         

@@ -30,7 +30,7 @@
         echo json_encode(array('message' => 'No Reviews Found for user '.$userID));
     }
 
-    //User Query
+    //Review Query
     $result = $review->readUsersReviews($userID);
 
     $num = $result->rowCount();
