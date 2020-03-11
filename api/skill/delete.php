@@ -15,7 +15,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate listing object
+    //Instantiate skill object
     $skill = new Skill($conn);
 
     // CHECK GET ID PARAMETER OR NOT
@@ -31,6 +31,11 @@
     else{
         echo json_encode(array('message' => 'No User Found'));
     }
+
+    // Get raw posted data
+    $data = json_decode(file_get_contents("php://input"));
+
+    $skill->description = $data->description;
 
 
     // Delete Skill
