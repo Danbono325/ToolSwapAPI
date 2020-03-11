@@ -31,7 +31,7 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found'));
+        echo json_encode(array('message' => 'No Listing Found with user id '.userID." and listing id ".$listingID));
     }
 
     // Get raw posted data

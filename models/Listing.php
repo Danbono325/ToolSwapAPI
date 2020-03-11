@@ -5,9 +5,9 @@
         private $conn;
         //private $table = 'users';
 
-        // User Properties
+        // Listing Properties
         public $userID;
-        public $idlistings;
+        // public $idlistings;
         public $title;
         public $description;
         public $expectedDays;
