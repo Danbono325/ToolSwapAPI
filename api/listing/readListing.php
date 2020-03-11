@@ -27,7 +27,7 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found for listing'.$listing_id));
+        echo json_encode(array('message' => 'No Listing Found for listing '.$listingID));
     }
 
     //User Query

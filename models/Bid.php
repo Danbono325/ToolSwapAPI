@@ -56,6 +56,19 @@
         }
 
         // Get Bid Details
+        public function readBid($bidID) {
+            $query = "SELECT * FROM bids WHERE idbids = $bidID;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
+
         // Get all bids on a Listing
         // Get all bids by a user
         // Update a Bid
