@@ -100,7 +100,58 @@
         }
 
         // Update a Bid
+        public function update($bidID){
+            $query = "UPDATE bids SET amount = :amount,
+                                            estimatedTimeDays = :estimatedTimeDays,
+                                            estimatedTimeWeeks = :estimatedTimeWeeks,
+                                            estimatedTimeMonths = :estimatedTimeMonths,
+                                            estimatedTimeYears = :estimatedTimeYears,
+                                            message = :message
+                                    WHERE idbids= $bidID";
+
+            $stmt = $this->conn->prepare($query);
+
+            //Clean data
+            // $this->title = htmlspecialchars(strip_tags($this->title));
+            $this->message = htmlspecialchars(strip_tags($this->message));
+
+            //Bind data
+            $stmt->bindParam(':amount', $this->amount, PDO::PARAM_INT);
+            $stmt->bindParam(':estimatedTimeDays', $this->estimatedTimeDays, PDO::PARAM_INT);
+            $stmt->bindParam(':estimatedTimeWeeks', $this->estimatedTimeWeeks, PDO::PARAM_INT);
+            $stmt->bindParam(':estimatedTimeMonths', $this->estimatedTimeMonths, PDO::PARAM_INT);
+            $stmt->bindParam(':estimatedTimeYears', $this->estimatedTimeYears, PDO::PARAM_INT);
+            $stmt->bindParam(':message', $this->message, PDO::PARAM_STR, 6000);
+
+            // Execute Query
+            if($stmt->execute()){
+                return true;
+            }
+
+            //Print error if something goes wrong
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+        }
+
         // Delete a Bid
+        public function delete($bidID){
+            //Delete Query
+            $query = "CALL DeleteBid($bidID);";
+
+            $stmt = $this->conn->prepare($query);
+
+
+            // Execute Query
+            if($stmt->execute()){
+                return true;
+            }
+
+            //Print error if something goes wrong
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+        }
 
     }
 ?>
