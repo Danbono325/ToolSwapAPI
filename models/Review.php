@@ -47,6 +47,19 @@
             return false;
         }
 
+        // Review details
+        public function readReview($reviewID) {
+            $query = "SELECT * FROM reviews r WHERE idreviews = $reviewID;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         // Get all reviews on a user
         public function readUsersReviews($userID) {
             $query = "SELECT * FROM reviews r 

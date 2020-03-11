@@ -16,25 +16,26 @@
     $review = new Review($conn);
 
     // CHECK GET ID PARAMETER OR NOT
-    if(isset($_GET['listing_id']))
+    if(isset($_GET['review_id']))
     {
         //IF HAS ID PARAMETER
-        $listingID = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+        $reviewID = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
             'options' => [
-                'default' => 'listing',
+                'default' => 'review',
                 'min_range' => 1
             ]
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found for listing '.$listing_id));
+        echo json_encode(array('message' => 'No Review Found'));
     }
 
-    //Review Query
-    $result = $review->readListingReviews($listingID);
+    //User Query
+    $result = $review->readReview($reviewID);
 
     $num = $result->rowCount();
 
+    //$userListings = array();
     $reviewsData['data'] = array();
 
     if($num > 0){
@@ -42,7 +43,6 @@
             extract($row);
 
             $reviewItem = array(
-                'reviewID' => $idreviews,
                 'expectationScore' => $expectationScore,
                 'timeframeScore' => $timeframeScore,
                 'budgetScore' => $budgetScore,
@@ -52,7 +52,7 @@
         }
         echo json_encode($reviewsData);
     } else {
-        //No Listings Found
-        echo json_encode(array('message' => 'No Reviews Found'));
+        //No Listing Found
+        echo json_encode(array('message' => 'No Review Found'));
     }
 ?>

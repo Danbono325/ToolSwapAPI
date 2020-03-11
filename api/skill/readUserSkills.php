@@ -8,51 +8,48 @@
 
 
     include_once '../../config/Database.php';
-    include_once '../../models/Review.php';
+    include_once '../../models/Skill.php';
 
     $database = new Database();
     $conn = $database->dbConnection();
 
-    $review = new Review($conn);
+    $skill = new Skill($conn);
 
     // CHECK GET ID PARAMETER OR NOT
-    if(isset($_GET['listing_id']))
+    if(isset($_GET['user_id']))
     {
         //IF HAS ID PARAMETER
-        $listingID = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+        $userID = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
-                'default' => 'listing',
+                'default' => 'user',
                 'min_range' => 1
             ]
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found for listing '.$listing_id));
+        echo json_encode(array('message' => 'No user found'));
     }
 
     //Review Query
-    $result = $review->readListingReviews($listingID);
+    $result = $skill->readUserSkills($userID);
 
     $num = $result->rowCount();
 
-    $reviewsData['data'] = array();
+    $skillsData['data'] = array();
 
     if($num > 0){
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
             extract($row);
 
-            $reviewItem = array(
-                'reviewID' => $idreviews,
-                'expectationScore' => $expectationScore,
-                'timeframeScore' => $timeframeScore,
-                'budgetScore' => $budgetScore,
+            $skillItem = array(
+                'skillID' => $idskills,
                 'description' => $description
             );
-            array_push($reviewsData['data'], $reviewItem);
+            array_push($skillsData['data'], $skillItem);
         }
-        echo json_encode($reviewsData);
+        echo json_encode($skillsData);
     } else {
         //No Listings Found
-        echo json_encode(array('message' => 'No Reviews Found'));
+        echo json_encode(array('message' => 'No Skills Found'));
     }
 ?>
