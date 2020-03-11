@@ -77,7 +77,25 @@
             return $stmt;
         }
 
-        // Delete a Review
+        // Delete a Review 
+        public function delete($reviewID){
+            //Delete Query
+            $query = "CALL DeleteReview($reviewID);";
+
+            $stmt = $this->conn->prepare($query);
+
+
+            // Execute Query
+            if($stmt->execute()){
+                return true;
+            }
+
+            //Print error if something goes wrong
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+        }
+
         // Update a Review
         
     }
