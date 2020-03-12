@@ -30,12 +30,11 @@
         echo json_encode(array('message' => 'No Listing Found for listing '.$listingID));
     }
 
-    //User Query
+    // Listing Query
     $result = $listing->readListing($listingID);
 
     $num = $result->rowCount();
 
-    //$userListings = array();
     $listingsData['data'] = array();
 
     if($num > 0){

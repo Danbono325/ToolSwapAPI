@@ -27,15 +27,14 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listings Found for user '.$userID));
+        echo json_encode(array('message' => 'No Listings Found'));
     }
 
-    //User Query
+    //User's listings Query
     $result = $listing->readUsersListings($userID);
 
     $num = $result->rowCount();
 
-    //$userListings = array();
     $listingsData['data'] = array();
 
     if($num > 0){

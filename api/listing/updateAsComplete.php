@@ -41,7 +41,7 @@
         );
     } else {
         echo json_encode(
-            array('Message'=> 'Listing not Updated')
+            array('Message'=> 'Listing not Updated as complete')
         );
     }
 ?>

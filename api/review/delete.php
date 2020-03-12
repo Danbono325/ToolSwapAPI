@@ -15,7 +15,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate listing object
+    //Instantiate review object
     $review = new Review($conn);
 
     // CHECK GET ID PARAMETER OR NOT

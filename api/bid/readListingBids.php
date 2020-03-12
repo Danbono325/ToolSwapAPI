@@ -27,10 +27,10 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listings Found for user '.$listingID));
+        echo json_encode(array('message' => 'No Listings Found'));
     }
 
-    // Bids Query
+    // Listing bids Query
     $result = $bid->readListingBids($listingID);
 
     $num = $result->rowCount();
@@ -55,7 +55,7 @@
         }
         echo json_encode($bidsData);
     } else {
-        //No Bids Found
+        //No bids found
         echo json_encode(array('message' => 'No Bids Found'));
     }
 ?>

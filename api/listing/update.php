@@ -31,14 +31,12 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found with listing id '.$listingID));
+        echo json_encode(array('message' => 'No Listing Found'));
     }
 
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    // Set ID to update
-    //$user->user_id = $data->user_id;
 
     $listing->title = $data->title;
     $listing->description = $data->description;

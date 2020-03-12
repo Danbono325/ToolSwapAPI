@@ -27,15 +27,14 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Bid for id '.$bidID));
+        echo json_encode(array('message' => 'No Bid Found'));
     }
 
-    //User Query
+    // Bid Query
     $result = $bid->readBid($bidID);
 
     $num = $result->rowCount();
 
-    //$userListings = array();
     $bidsData['data'] = array();
 
     if($num > 0){
@@ -55,7 +54,7 @@
         }
         echo json_encode($bidsData);
     } else {
-        //No Listing Found
+        //No Bid Found
         echo json_encode(array('message' => 'No Bids Found'));
     }
 ?>

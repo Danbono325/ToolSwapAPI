@@ -16,12 +16,11 @@
     $listing = new Listing($conn);
 
 
-    //User Query
+    //Uncompleted Listings Query
     $result = $listing->readAllUncompleted();
 
     $num = $result->rowCount();
 
-    //$userListings = array();
     $listingsData['data'] = array();
 
     if($num > 0){

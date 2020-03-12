@@ -15,7 +15,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate user object
+    //Instantiate listing object
     $listing = new Listing($conn);
 
     if(isset($_GET['user_id'])){
@@ -29,7 +29,7 @@
 
     }
     else {
-        echo json_encode(array('message' => 'No Listing Found with user id '.$userID));
+        echo json_encode(array('message' => 'No User Found'));
     }
 
     // Get raw posted data

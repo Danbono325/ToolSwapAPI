@@ -15,7 +15,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate user object
+    //Instantiate review object
     $review = new Review($conn);
 
      // CHECK GET ID PARAMETER OR NOT
@@ -39,19 +39,18 @@
         }
      }
      else {
-         echo json_encode(array('message' => 'No Listing Found with user id '.$userID." and listing id ".$listingID));
+         echo json_encode(array('message' => 'No Listing or User Found'));
      }
 
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    // $review->userID = $data->userID;
-    // $review->listingID = $data->listingID;
     $review->expectationScore = $data->expectationScore;
     $review->timeframeScore = $data->timeframeScore;
     $review->budgetScore = $data->budgetScore;
     $review->description = $data->description;
 
+    // Create Review Query
     if($review->create($userID, $listingID)){
         echo json_encode(
             array('Message'=>'Review Created')

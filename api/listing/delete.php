@@ -33,14 +33,7 @@
         echo json_encode(array('message' => 'No Listing Found'));
     }
 
-    // Get raw posted data
-    //$data = json_decode(file_get_contents("php://input"));
-
-    // Set ID to update
-    //$user->user_id = $data->user_id;
-
-
-    // Update user
+    // Delete Listing
     if($listing->delete($listingID)){
         echo json_encode(
             array('Message'=>'Listing Deleted')

@@ -30,7 +30,7 @@
         echo json_encode(array('message' => 'No Bids Found for user '.$userID));
     }
 
-    //User Query
+    // User's bids Query
     $result = $bid->readUsersBids($userID);
 
     $num = $result->rowCount();

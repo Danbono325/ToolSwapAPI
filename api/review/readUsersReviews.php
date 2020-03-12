@@ -13,6 +13,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
+    // Instantiate review object
     $review = new Review($conn);
 
     // CHECK GET ID PARAMETER OR NOT
@@ -51,7 +52,7 @@
         }
         echo json_encode($reviewsData);
     } else {
-        //No Listings Found
+        //No Reivews Found
         echo json_encode(array('message' => 'No Reviews Found'));
     }
 ?>

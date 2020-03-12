@@ -35,10 +35,13 @@
                    'min_range' => 1
                ]
            ]);
-       }
+       } else {
+        echo json_encode(array('message' => 'No Listing Found'));
+    }
+
     }
     else {
-        echo json_encode(array('message' => 'No Listing Found with user id '.$userID." and listing id ".$listingID));
+        echo json_encode(array('message' => 'No User Found'));
     }
 
     // Get raw posted data
