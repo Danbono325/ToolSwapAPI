@@ -35,7 +35,9 @@
     }
 
     // Update listing as complete
-    if($listing->updateAsComplete($listingID)){
+    if ($listing->readListing($listingID)->rowCount() <= 0 ){
+        echo json_encode(array('Message'=>'No Listing found with '.$listingID));
+    } else if($listing->updateAsComplete($listingID)){
         echo json_encode(
             array('Message'=>'Listing Updated as Complete')
         );

@@ -39,7 +39,9 @@
 
 
     // Delete Skill
-    if($skill->removeSkill($userID)){
+    if($user->read($userID)->rowCount() <= 0) {
+        echo json_encode(array('message' => 'No User Found with '.$userID));
+    } else if($skill->removeSkill($userID)){
         echo json_encode(
             array('Message'=>'Skill Deleted')
         );

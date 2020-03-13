@@ -47,7 +47,9 @@
 
 
     // Update listing
-    if($listing->update($listingID)){
+    if ($listing->readListing($listingID)->rowCount() <= 0 ){
+        echo json_encode(array('Message'=>'No Listing found with '.$listingID));
+    } else if($listing->update($listingID)){
         echo json_encode(
             array('Message'=>'Listing Updated')
         );

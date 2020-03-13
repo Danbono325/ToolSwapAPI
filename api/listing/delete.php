@@ -34,7 +34,9 @@
     }
 
     // Delete Listing
-    if($listing->delete($listingID)){
+    if ($listing->readListing($listingID)->rowCount() <= 0 ){
+        echo json_encode(array('Message'=>'No Listing found with '.$listingID));
+    } else if($listing->delete($listingID)){
         echo json_encode(
             array('Message'=>'Listing Deleted')
         );

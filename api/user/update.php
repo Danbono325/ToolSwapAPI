@@ -47,7 +47,9 @@
 
 
     // Update user
-    if($user->update($user_id)){
+    if($user->read($userID)->rowCount() <= 0){
+        echo json_encode(array('message' => 'No User Found with '.$userID));
+    } else if($user->update($user_id)){
         echo json_encode(
             array('Message'=>'User Updated')
         );

@@ -11,12 +11,16 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Listing.php';
+    include_once '../../models/User.php';
+
 
     $database = new Database();
     $conn = $database->dbConnection();
 
     //Instantiate listing object
     $listing = new Listing($conn);
+    $user = new User($conn);
+
 
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
@@ -43,7 +47,9 @@
     $listing->expectedYears = $data->expectedYears;
 
 
-    if($listing->create($userID)){
+    if($user->read($userID)->rowCount() <= 0 ){
+        echo json_encode(array('message' => 'No User Found with '.$userID));
+    } else if($listing->create($userID)){
         echo json_encode(
             array('Message'=>'Listing Created')
         );

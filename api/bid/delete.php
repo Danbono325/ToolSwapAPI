@@ -35,7 +35,9 @@
 
 
     // Delete Bid
-    if($bid->delete($bidID)){
+    if($bid->readBid($bidID)->rowCount() <= 0 ){
+        echo json_encode(array('message' => 'No Bid Found with '.$bidID));
+    } else if($bid->delete($bidID)){
         echo json_encode(
             array('Message'=>'Bid Deleted')
         );

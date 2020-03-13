@@ -11,12 +11,18 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Review.php';
+    include_once '../../models/User.php';
+    include_once '../../models/Listing.php';
+
 
     $database = new Database();
     $conn = $database->dbConnection();
 
     //Instantiate review object
     $review = new Review($conn);
+    $user = new User($conn);
+    $listing = new Listing($conn);
+
 
      // CHECK GET ID PARAMETER OR NOT
      if(isset($_GET['user_id'])){
@@ -51,7 +57,16 @@
     $review->description = $data->description;
 
     // Create Review Query
-    if($review->create($userID, $listingID)){
+
+    if($user->read($userID)->rowCount() <= 0 ){
+
+        echo json_encode(array('Message'=>'No User found with '.$userID));
+
+    } else if ($listing->readListing($listingID)->rowCount() <= 0 ){
+
+        echo json_encode(array('Message'=>'No Listing found with '.$listingID));
+
+    } else if($review->create($userID, $listingID)){
         echo json_encode(
             array('Message'=>'Review Created')
         );

@@ -11,12 +11,18 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Bid.php';
+    include_once '../../models/User.php';
+    include_once '../../models/Listing.php';
+
 
     $database = new Database();
     $conn = $database->dbConnection();
 
     //Instantiate user object
     $bid = new Bid($conn);
+    $user = new User($conn);
+    $listing = new Listing($conn);
+
 
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
@@ -44,10 +50,13 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
+    
+
+
+    
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
-    
     $bid->amount = $data->amount;
     $bid->estimatedTimeDays = $data->estimatedTimeDays;
     $bid->estimatedTimeWeeks = $data->estimatedTimeWeeks;
@@ -55,13 +64,26 @@
     $bid->estimatedTimeYears = $data->estimatedTimeYears;
     $bid->message = $data->message;
 
-    if($bid->create($userID, $listingID)){
-        echo json_encode(
-            array('Message'=>'Bid Created')
-        );
+    $result = $user->read($userID);
+    $result2 = $listing->readListing($listingID);
+
+    if($result->rowCount() <= 0 ){
+
+        echo json_encode(array('Message'=>'No User found with '.$userID));
+
+    } else if ($result2->rowCount() <= 0 ){
+
+        echo json_encode(array('Message'=>'No Listing found with '.$listingID));
+
+    } else if($bid->create($userID, $listingID)){
+
+        echo json_encode(array('Message'=>'Bid Created'));
+
     } else {
         echo json_encode(
             array('Message'=> 'Bid not Created')
         );
     }
+
+    
 ?>

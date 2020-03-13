@@ -11,12 +11,15 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Skill.php';
+    include_once '../../models/User.php';
+
 
     $database = new Database();
     $conn = $database->dbConnection();
 
     //Instantiate user object
     $skill = new Skill($conn);
+    $user = new User($conn);
 
      // CHECK GET ID PARAMETER OR NOT
      if(isset($_GET['user_id'])){
@@ -37,7 +40,9 @@
 
     $skill->description = $data->description;
 
-    if($skill->addSkill($userID)){
+    if($user->read($userID)->rowCount() <= 0) {
+        echo json_encode(array('message' => 'No User Found with '.$userID));
+    } else if($skill->addSkill($userID)){
         echo json_encode(
             array('Message'=>'Skill Added')
         );

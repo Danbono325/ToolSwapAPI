@@ -45,8 +45,11 @@
     $bid->message = $data->message;
 
 
-    // Update listing
-    if($bid->update($bidID)){
+    // Update bid
+    
+    if($bid->readBid($bidID)->rowCount() <= 0 ){
+        echo json_encode(array('message' => 'No Bid Found with '.$bidID));
+    } else if($bid->update($bidID)){
         echo json_encode(
             array('Message'=>'Bid Updated')
         );

@@ -43,7 +43,9 @@
     $review->description = $data->description;
 
     // Update review
-    if($review->update($reviewID)){
+    if($review->readReview($reviewID)->rowCount() <= 0){
+        echo json_encode(array('message' => 'No Review Found with '.$reviewID));
+    } else if($review->update($reviewID)){
         echo json_encode(
             array('Message'=>'Review Updated')
         );
