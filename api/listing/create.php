@@ -24,7 +24,7 @@
 
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
-        $userID = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'user',
                 'min_range' => 1
@@ -35,6 +35,8 @@
     else {
         echo json_encode(array('message' => 'No User Found'));
     }
+
+    $user->user_id = $user_id;
 
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
@@ -47,9 +49,9 @@
     $listing->expectedYears = $data->expectedYears;
 
 
-    if($user->read($userID)->rowCount() <= 0 ){
-        echo json_encode(array('message' => 'No User Found with '.$userID));
-    } else if($listing->create($userID)){
+    if($user->read()->rowCount() <= 0 ){
+        echo json_encode(array('message' => 'No User Found with '.$user_id));
+    } else if($listing->create($user_id)){
         echo json_encode(
             array('Message'=>'Listing Created')
         );

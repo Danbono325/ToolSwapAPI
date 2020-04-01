@@ -40,6 +40,8 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
+    $user->user_id = $user_id;
+
 
     if($jwt){
         // if decode succeed, show user details
@@ -49,7 +51,7 @@
             $decoded = JWT::decode($jwt, $key, array('HS256'));
 
             //User Query
-            $result = $user->read($user_id);
+            $result = $user->read();
 
             $num = $result->rowCount();
 
@@ -68,6 +70,8 @@
                     );
                     array_push($user_data['data'], $userData);
                 }
+                http_response_code(200);
+
                 echo json_encode($user_data);
             } else {
                 //No User Found
@@ -88,6 +92,8 @@
             ));
         }
     } else {
+        http_response_code(401);
+
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
 ?>

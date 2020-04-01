@@ -41,11 +41,11 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
+    $user->user_id = $user_id;
+
+
     // Get raw posted data
     $data = json_decode(file_get_contents("php://input"));
-
-    // Set data to update
-    //$user->user_id = $data->user_id;
 
     $user->username = $data->username;
     $user->password = $data->password;
@@ -60,17 +60,8 @@
     
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
-    
-            // access granted
-            // echo json_encode(array(
-            //     "message" => "Access granted."
-            // ));
-
-            // echo json_encode(array('id' => $decoded->data->id, 'user_id' => $user_id));
-
-
-           
-            if($user->read($user_id)->rowCount() <= 0) {
+               
+            if($user->read()->rowCount() <= 0) {
                 echo json_encode(array('message' => 'No User Found with '.$user_id));
              // Update user
             } else if($decoded->data->id == $user_id && $user->update($user_id)) {
@@ -91,10 +82,15 @@
                 );
                 $jwt = JWT::encode($token, $key);
 
+                http_response_code(200);
+
+
                 echo json_encode(
                     array('Message' => 'User Updated', "jwt" => $jwt)
                 );
             } else {
+                http_response_code(404);
+
                 echo json_encode(
                     array('Message'=> 'User not Updated')
                 );
@@ -111,6 +107,8 @@
             ));
         }
     } else {
+        http_response_code(401);
+
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
 

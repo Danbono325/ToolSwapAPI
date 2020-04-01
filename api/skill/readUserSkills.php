@@ -47,9 +47,13 @@
             );
             array_push($skillsData['data'], $skillItem);
         }
+        http_response_code(200);
+
         echo json_encode($skillsData);
     } else {
         //No Listings Found
+        http_response_code(404);
+
         echo json_encode(array('message' => 'No Skills Found'));
     }
 ?>

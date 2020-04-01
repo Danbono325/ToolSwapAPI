@@ -39,9 +39,13 @@
             );
             array_push($listingsData['data'], $listingItem);
         }
+        http_response_code(200);
+
         echo json_encode($listingsData);
     } else {
         //No Listings Found
+        http_response_code(404);
+
         echo json_encode(array('message' => 'No Listing Found'));
     }
 ?>

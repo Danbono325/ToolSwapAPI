@@ -29,6 +29,9 @@
     
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
+
+            http_response_code(200);
+
     
             // show user properties
             echo json_encode(array(
@@ -49,6 +52,8 @@
             ));
         }
     } else {
+        http_response_code(401);
+
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
 ?>

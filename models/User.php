@@ -19,8 +19,8 @@
         }    
         
         //Get User
-        public function read($userID) {
-            $query = "SELECT * FROM  users WHERE idusers=$userID";
+        public function read() {
+            $query = "SELECT * FROM  users WHERE idusers=$this->user_id";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);

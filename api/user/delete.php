@@ -40,6 +40,8 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
+    $user->user_id = $user_id;
+
     // if jwt is not empty
     if($jwt) {
         // if decode succeed, show user details
@@ -57,15 +59,19 @@
 
 
             // Update user
-            if($user->read($user_id)->rowCount() <= 0) {
+            if($user->read()->rowCount() <= 0) {
 
                 echo json_encode(array('message' => 'No User Found with '.$user_id));
 
             } else if ($decoded->data->id == $user_id && $user->delete($user_id)){
+                http_response_code(200);
+
                 echo json_encode(
                     array('Message'=>'User Deleted')
                 );
             } else {
+                http_response_code(404);
+
                 echo json_encode(
                     array('Message'=> 'User not Deleted')
                 );
@@ -83,6 +89,8 @@
             ));
         }
     } else {
+        http_response_code(401);
+
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
 

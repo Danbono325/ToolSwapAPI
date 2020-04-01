@@ -29,8 +29,10 @@ if(isset($_GET['user_id']))
     echo json_encode(array('message' => 'No User Found'));
 }
 
+$user->user_id = $user_id;
+
 //User Query
-$result = $user->read($user_id);
+$result = $user->read();
 
 $num = $result->rowCount();
 
@@ -49,9 +51,13 @@ if($num > 0){
         );
         array_push($user_data['data'], $userData);
     }
+    http_response_code(200);
+
     echo json_encode($user_data);
 } else {
     //No User Found
+    http_response_code(404);
+
     echo json_encode(array('message' => 'No User Found'));
 }
 ?>

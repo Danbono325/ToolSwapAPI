@@ -29,13 +29,6 @@
     $user->email = $data->email;
     $email_exists = $user->emailExists();
 
-    // if(password_verify($data->password, $user->password))
-    // {
-    //     echo json_encode(array("msg" => "matched"));
-    // } else {
-    //     echo json_encode(array("msg" => "passwords didnt match"));
-    // }
-
     // check if email exists and if password is correct
     if($email_exists && $data->password == $user->password){
         

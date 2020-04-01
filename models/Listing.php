@@ -7,7 +7,7 @@
 
         // Listing Properties
         public $userID;
-        // public $idlistings;
+        public $idlistings;
         public $title;
         public $description;
         public $expectedDays;
@@ -35,8 +35,21 @@
         }
 
         // Get Listing Details
-        public function readListing($listingID) {
-            $query = "SELECT * FROM listings WHERE idlistings = $listingID;";
+        public function readListing() {
+            $query = "SELECT * FROM listings WHERE idlistings = $this->idlistings;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
+        // Confirm user listing
+        public function userListingConfirm($userID) {
+            $query = "SELECT * FROM listings l JOIN users_listings ul ON ul.listings_idlistings = $this->idlistings LIMIT 0,1; WHERE ul.users_idusers=$userID";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);
@@ -95,14 +108,14 @@
         
 
         //Update listing
-        public function update($listingID){
+        public function update(){
             $query = "UPDATE listings SET title = :title,
                                             description = :description,
                                             expectedDays = :expectedDays,
                                             expectedWeeks = :expectedWeeks,
                                             expectedMonths = :expectedMonths,
                                             expectedYears = :expectedYears
-                                    WHERE idlistings= $listingID";
+                                    WHERE idlistings= $this->idlistings";
 
             $stmt = $this->conn->prepare($query);
 
@@ -131,8 +144,8 @@
         }
 
         // Update listing as completed
-        public function updateAsComplete($listingID){
-            $query = "UPDATE listings SET completed = 1 WHERE idlistings= $listingID";
+        public function updateAsComplete(){
+            $query = "UPDATE listings SET completed = 1 WHERE idlistings= $this->idlistings";
 
             $stmt = $this->conn->prepare($query);
 
@@ -148,9 +161,9 @@
         }
 
         // Delete Listing
-        public function delete($listingID){
+        public function delete(){
             //Delete Query
-            $query = "CALL DeleteListing($listingID);";
+            $query = "CALL DeleteListing($this->idlistings);";
 
             $stmt = $this->conn->prepare($query);
 
