@@ -6,7 +6,6 @@
         //private $table = 'users';
 
         // Listing Properties
-        public $userID;
         public $idlistings;
         public $title;
         public $description;
@@ -49,7 +48,7 @@
 
         // Confirm user listing
         public function userListingConfirm($userID) {
-            $query = "SELECT * FROM listings l JOIN users_listings ul ON ul.listings_idlistings = $this->idlistings LIMIT 0,1; WHERE ul.users_idusers=$userID";
+            $query = "SELECT * FROM listings l JOIN users_listings ul ON ul.listings_idlistings = l.idlistings WHERE ul.users_idusers=$userID AND l.idlistings = $this->idlistings LIMIT 0,1;";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);

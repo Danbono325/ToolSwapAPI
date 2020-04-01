@@ -20,7 +20,7 @@
     if(isset($_GET['user_id']))
     {
         //IF HAS ID PARAMETER
-        $userID = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'listing',
                 'min_range' => 1
@@ -28,11 +28,11 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Reviews Found for user '.$userID));
+        echo json_encode(array('message' => 'No Reviews Found for user '.$user_id));
     }
 
     //Review Query
-    $result = $review->readUsersReviews($userID);
+    $result = $review->readUsersReviews($user_id);
 
     $num = $result->rowCount();
 
@@ -50,9 +50,13 @@
             );
             array_push($reviewsData['data'], $reviewItem);
         }
+        http_response_code(200);
+
         echo json_encode($reviewsData);
     } else {
         //No Reivews Found
+        http_response_code(404);
+
         echo json_encode(array('message' => 'No Reviews Found'));
     }
 ?>

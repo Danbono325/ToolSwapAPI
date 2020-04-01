@@ -20,7 +20,7 @@
     if(isset($_GET['review_id']))
     {
         //IF HAS ID PARAMETER
-        $reviewID = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
+        $review_id = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'review',
                 'min_range' => 1
@@ -31,8 +31,10 @@
         echo json_encode(array('message' => 'No Review Found'));
     }
 
+    $review->review_id = $review_id;
+
     //Review Query
-    $result = $review->readReview($reviewID);
+    $result = $review->readReview();
 
     $num = $result->rowCount();
 
@@ -50,9 +52,13 @@
             );
             array_push($reviewsData['data'], $reviewItem);
         }
+        http_response_code(200);
+
         echo json_encode($reviewsData);
     } else {
         //No Review Found
+        http_response_code(404);
+
         echo json_encode(array('message' => 'No Review Found'));
     }
 ?>

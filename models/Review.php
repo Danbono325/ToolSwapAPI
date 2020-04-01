@@ -5,6 +5,7 @@
         //private $table = 'users';
 
         // Review Properties
+        public $review_id;
         public $expectationScore;
         public $timeframeScore;
         public $budgetScore;
@@ -48,8 +49,21 @@
         }
 
         // Review details
-        public function readReview($reviewID) {
-            $query = "SELECT * FROM reviews r WHERE idreviews = $reviewID;";
+        public function readReview() {
+            $query = "SELECT * FROM reviews r WHERE idreviews = $this->review_id;";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
+        // Confirm user review
+        public function userReviewConfirm($userID) {
+            $query = "SELECT * FROM reviews r JOIN listings_reviews lr ON lr.reviews_idreviews = r.idreviews WHERE lr.users_idusers=$userID AND r.idreviews=$this->review_id LIMIT 0,1";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);
@@ -91,9 +105,9 @@
         }
 
         // Delete a Review 
-        public function delete($reviewID){
+        public function delete(){
             //Delete Query
-            $query = "CALL DeleteReview($reviewID);";
+            $query = "CALL DeleteReview($this->review_id);";
 
             $stmt = $this->conn->prepare($query);
 
@@ -110,12 +124,12 @@
         }
 
         // Update a Review
-        public function update($reviewID){
+        public function update(){
             $query = "UPDATE reviews SET expectationScore = :expectationScore,
                                             timeframeScore = :timeframeScore,
                                             budgetScore = :budgetScore,
                                             description = :description
-                                    WHERE idreviews= $reviewID";
+                                    WHERE idreviews= $this->review_id";
 
             $stmt = $this->conn->prepare($query);
 
