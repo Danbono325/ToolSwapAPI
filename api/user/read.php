@@ -25,8 +25,7 @@ if(isset($_GET['user_id']))
             'min_range' => 1
         ]
     ]);
-}
-else{
+} else {
     echo json_encode(array('message' => 'No User Found'));
 }
 
@@ -44,7 +43,6 @@ if($num > 0){
         $userData = array(
             'user_id' => $user_id,
             'username' => $username,
-            'password' => $password,
             'email' => $email,
             'firstname' => $firstname,
             'lastname' => $lastname

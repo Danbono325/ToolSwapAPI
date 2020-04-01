@@ -1,11 +1,11 @@
 <?php
     // SET HEADER
     header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: access");
+    header("Access-Control-Allow-Methods: GET");
+    header("Access-Control-Allow-Credentials: true");
     header("Content-Type: application/json; charset=UTF-8");
-    header("Access-Control-Allow-Methods: DELETE");
-    //header("Access-Control-Allow-Credentials: true");
-    header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, 
-            Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
+
 
     include_once '../../config/Database.php';
     include_once '../../models/User.php';
@@ -18,10 +18,10 @@
     include_once '../../libs/php-jwt-master/src/JWT.php';
     use \Firebase\JWT\JWT;
 
+
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate user object
     $user = new User($conn);
 
     $jwt = $_SERVER["HTTP_X_AUTH"];
@@ -40,42 +40,47 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
-    // if jwt is not empty
-    if($jwt) {
+
+    if($jwt){
         // if decode succeed, show user details
         try {
+
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
-    
-            // show user properties
-            // echo json_encode(array(
-            //     "message" => "Access granted.",
-            //     "data" => $decoded->data
-            // ));
 
-            // echo json_encode(array('id' => $decoded->data->id, 'user_id' => $user_id));
+            //User Query
+            $result = $user->read($user_id);
 
+            $num = $result->rowCount();
 
-            // Update user
-            if($user->read($user_id)->rowCount() <= 0) {
+            $user_data['data'] = array();
 
-                echo json_encode(array('message' => 'No User Found with '.$user_id));
-
-            } else if ($decoded->data->id == $user_id && $user->delete($user_id)){
-                echo json_encode(
-                    array('Message'=>'User Deleted')
-                );
-            } else {
-                echo json_encode(
-                    array('Message'=> 'User not Deleted')
-                );
-            }
-            // if decode fails, it means jwt is invalid
-        } catch (Exception $e) {
+            if($num > 0){
+                while($row = $result->fetch(PDO::FETCH_ASSOC)){
+                    extract($row);
             
+                    $userData = array(
+                        'user_id' => $user_id,
+                        'username' => $username,
+                        'email' => $email,
+                        'firstname' => $firstname,
+                        'lastname' => $lastname
+                    );
+                    array_push($user_data['data'], $userData);
+                }
+                echo json_encode($user_data);
+            } else {
+                //No User Found
+                http_response_code(404);
+
+
+                echo json_encode(array('message' => 'No User Found'));
+            }
+        } catch (Exception $e) {
+        
             // set response code
             http_response_code(401);
-            
+        
             // show error message
             echo json_encode(array(
                 "message" => "Access denied.",
@@ -85,7 +90,4 @@
     } else {
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
-
-    
 ?>
-

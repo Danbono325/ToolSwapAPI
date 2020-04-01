@@ -11,17 +11,30 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Skill.php';
+    include_once '../../models/User.php';
+
+    //Used for generating token
+    include_once '../../config/core.php';
+    include_once '../../libs/php-jwt-master/src/BeforeValidException.php';
+    include_once '../../libs/php-jwt-master/src/ExpiredException.php';
+    include_once '../../libs/php-jwt-master/src/SignatureInvalidException.php';
+    include_once '../../libs/php-jwt-master/src/JWT.php';
+    use \Firebase\JWT\JWT;
+
+    $jwt = $_SERVER["HTTP_X_AUTH"];
 
     $database = new Database();
     $conn = $database->dbConnection();
 
     //Instantiate skill object
     $skill = new Skill($conn);
+    $user = new User($conn);
+
 
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
-        $userID = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'user',
                 'min_range' => 1
@@ -32,22 +45,49 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
-    // Get raw posted data
-    $data = json_decode(file_get_contents("php://input"));
+    if($jwt) {
+    
+        // If decode succeed, check if its the right user and delete
+        try {
+    
+            // Decode jwt
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+    
+            $skill->description = $data->description;
 
-    $skill->description = $data->description;
+            
+            if($user->read($user_id)->rowCount() <= 0) {
 
+                echo json_encode(array('message' => 'No User Found with '.$user_id));
+                // Check user and Delete Skill
+            } else if($decoded->data->id == $user_id && $skill->removeSkill($user_id)) {
 
-    // Delete Skill
-    if($user->read($userID)->rowCount() <= 0) {
-        echo json_encode(array('message' => 'No User Found with '.$userID));
-    } else if($skill->removeSkill($userID)){
-        echo json_encode(
-            array('Message'=>'Skill Deleted')
-        );
+                http_response_code(200);
+
+                echo json_encode(
+                    array('Message'=>'Skill Deleted')
+                );
+
+            } else {
+                
+                echo json_encode(
+                    array('Message'=> 'Skill not Deleted')
+                );
+            }
+
+        } // If decode fails, it means jwt is invalid
+        catch (Exception $e){
+         
+            // Set response code
+            http_response_code(401);
+         
+            // Show error message
+            echo json_encode(array(
+                "message" => "Access denied.",
+                "error" => $e->getMessage()
+            ));
+        }
     } else {
-        echo json_encode(
-            array('Message'=> 'Skill not Deleted')
-        );
+        echo json_encode(array("Message" => "Not authorized no token found"));
     }
 ?>
