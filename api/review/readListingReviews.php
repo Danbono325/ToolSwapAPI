@@ -28,7 +28,7 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found'));
+        echo json_encode(array('Message' => 'No Listing Found'));
     }
 
     //Review Query
@@ -58,6 +58,6 @@
         //No Reviews Found
         http_response_code(404);
 
-        echo json_encode(array('message' => 'No Reviews Found'));
+        echo json_encode(array('Message' => 'No Reviews Found'));
     }
 ?>

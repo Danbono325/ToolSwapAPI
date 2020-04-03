@@ -19,7 +19,7 @@
     if(isset($_GET['listing_id']))
     {
         //IF HAS ID PARAMETER
-        $listing_id = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+        $listing->idlistings = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'listing',
                 'min_range' => 1
@@ -27,10 +27,10 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Listing Found for listing '.$listing_id));
+        echo json_encode(array('Message' => 'No Listing Found for listing '.$listing_id));
     }
 
-    $listing->idlistings = $listing_id;
+    // $listing->idlistings = $listing_id;
 
     // Listing Query
     $result = $listing->readListing();
@@ -62,6 +62,6 @@
         //No Listing Found
         http_response_code(404);
 
-        echo json_encode(array('message' => 'No Listings Found'));
+        echo json_encode(array('Message' => 'No Listings Found'));
     }
 ?>

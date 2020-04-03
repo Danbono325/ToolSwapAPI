@@ -27,7 +27,7 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No user found'));
+        echo json_encode(array('Message' => 'No user found'));
     }
 
     //Review Query
@@ -54,6 +54,6 @@
         //No Listings Found
         http_response_code(404);
 
-        echo json_encode(array('message' => 'No Skills Found'));
+        echo json_encode(array('Message' => 'No Skills Found'));
     }
 ?>

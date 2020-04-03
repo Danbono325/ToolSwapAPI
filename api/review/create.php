@@ -43,7 +43,7 @@
 
          if(isset($_GET['listing_id'])){
             //IF HAS ID PARAMETER
-            $listing_id = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+            $listing->idlistings = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
                 'options' => [
                     'default' => 'listing',
                     'min_range' => 1
@@ -55,7 +55,7 @@
          echo json_encode(array('message' => 'No Listing or User Found'));
      }
 
-     $listing->idlistings = $listing_id;
+    //  $listing->idlistings = $listing_id;
 
      if($jwt) {
     
@@ -99,7 +99,7 @@
          
             // Show error message
             echo json_encode(array(
-                "message" => "Access denied.",
+                "Message" => "Access denied.",
                 "error" => $e->getMessage()
             ));
         }

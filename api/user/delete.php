@@ -30,7 +30,7 @@
     if(isset($_GET['user_id']))
     {
         //IF HAS ID PARAMETER
-        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'user',
                 'min_range' => 1
@@ -40,7 +40,7 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
-    $user->user_id = $user_id;
+    // $user->user_id = $user_id;
 
     // if jwt is not empty
     if($jwt) {
@@ -48,20 +48,11 @@
         try {
             // decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
-    
-            // show user properties
-            // echo json_encode(array(
-            //     "message" => "Access granted.",
-            //     "data" => $decoded->data
-            // ));
-
-            // echo json_encode(array('id' => $decoded->data->id, 'user_id' => $user_id));
-
 
             // Update user
             if($user->read()->rowCount() <= 0) {
 
-                echo json_encode(array('message' => 'No User Found with '.$user_id));
+                echo json_encode(array('Message' => 'No User Found with '.$user_id));
 
             } else if ($decoded->data->id == $user_id && $user->delete($user_id)){
                 http_response_code(200);

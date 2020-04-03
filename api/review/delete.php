@@ -38,7 +38,7 @@
 
         if(isset($_GET['review_id'])){
         //IF HAS ID PARAMETER
-        $review_id = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
+        $review->review_id = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'listing',
                 'min_range' => 1
@@ -47,11 +47,10 @@
     }
     }
     else {
-        echo json_encode(array('message' => 'No Review or User Found'));
+        echo json_encode(array('Message' => 'No Review or User Found'));
     }
 
-
-    $review->review_id = $review_id;
+    // $review->review_id = $review_id;
 
     if($jwt) {
 
@@ -88,7 +87,7 @@
         
             // Show error message
             echo json_encode(array(
-                "message" => "Access denied.",
+                "Message" => "Access denied.",
                 "error" => $e->getMessage()
             ));
         }

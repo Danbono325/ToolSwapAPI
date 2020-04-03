@@ -28,7 +28,7 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No Reviews Found for user '.$user_id));
+        echo json_encode(array('Message' => 'No Reviews Found for user '.$user_id));
     }
 
     //Review Query
@@ -43,6 +43,7 @@
             extract($row);
 
             $reviewItem = array(
+                'reviewID' => $idreviews,
                 'expectationScore' => $expectationScore,
                 'timeframeScore' => $timeframeScore,
                 'budgetScore' => $budgetScore,
@@ -57,6 +58,6 @@
         //No Reivews Found
         http_response_code(404);
 
-        echo json_encode(array('message' => 'No Reviews Found'));
+        echo json_encode(array('Message' => 'No Reviews Found'));
     }
 ?>

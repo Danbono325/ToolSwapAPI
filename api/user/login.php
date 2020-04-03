@@ -52,7 +52,7 @@
         $jwt = JWT::encode($token, $key);
         echo json_encode(
                 array(
-                    "message" => "Successful login.",
+                    "Message" => "Successful login.",
                     "jwt" => $jwt
                 )
             );
@@ -63,6 +63,6 @@
         http_response_code(401);
     
         // tell the user login failed
-        echo json_encode(array("message" => "Login failed."));
+        echo json_encode(array("Message" => "Login failed."));
     }
 ?>

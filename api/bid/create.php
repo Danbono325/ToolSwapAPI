@@ -27,7 +27,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
-    //Instantiate user object
+    //Instantiate objects
     $bid = new Bid($conn);
     $user = new User($conn);
     $listing = new Listing($conn);
@@ -51,12 +51,12 @@
                ]
            ]);
        } else {
-        echo json_encode(array('message' => 'No Listing Found'));
+        echo json_encode(array('Message' => 'No Listing Found'));
     }
 
     }
     else {
-        echo json_encode(array('message' => 'No User Found'));
+        echo json_encode(array('Message' => 'No User Found'));
     }
 
     if($jwt) {
@@ -108,7 +108,7 @@
          
             // Show error message
             echo json_encode(array(
-                "message" => "Access denied.",
+                "Message" => "Access denied.",
                 "error" => $e->getMessage()
             ));
         }

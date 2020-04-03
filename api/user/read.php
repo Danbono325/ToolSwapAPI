@@ -19,17 +19,17 @@ $user = new User($conn);
 if(isset($_GET['user_id']))
 {
     //IF HAS ID PARAMETER
-    $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+    $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
         'options' => [
             'default' => 'user',
             'min_range' => 1
         ]
     ]);
 } else {
-    echo json_encode(array('message' => 'No User Found'));
+    echo json_encode(array('Message' => 'No User Found'));
 }
 
-$user->user_id = $user_id;
+// $user->user_id = $user_id;
 
 //User Query
 $result = $user->read();
@@ -58,6 +58,6 @@ if($num > 0){
     //No User Found
     http_response_code(404);
 
-    echo json_encode(array('message' => 'No User Found'));
+    echo json_encode(array('Message' => 'No User Found'));
 }
 ?>

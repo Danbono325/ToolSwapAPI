@@ -23,6 +23,7 @@
     $database = new Database();
     $conn = $database->dbConnection();
 
+    // Instantiate bid object
     $bid = new Bid($conn);
 
     // CHECK GET ID PARAMETER OR NOT
@@ -37,7 +38,7 @@
 
         if(isset($_GET['bid_id'])){
         //IF HAS ID PARAMETER
-        $bid_id = filter_var($_GET['bid_id'], FILTER_VALIDATE_INT,[
+        $bid->bid_id = filter_var($_GET['bid_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'listing',
                 'min_range' => 1
@@ -49,7 +50,7 @@
         echo json_encode(array('message' => 'No Bid or User Found'));
     }
 
-    $bid->bid_id = $bid_id;
+    //$bid->bid_id = $bid_id;
 
     if($jwt) {
 
@@ -95,7 +96,7 @@
                     http_response_code(404);
 
                     //No Bid Found
-                    echo json_encode(array('message' => 'No Bids Found'));
+                    echo json_encode(array('Message' => 'No Bids Found'));
                 }
                 
             } else {
@@ -114,7 +115,7 @@
         
             // Show error message
             echo json_encode(array(
-                "message" => "Access denied.",
+                "Message" => "Access denied.",
                 "error" => $e->getMessage()
             ));
         }

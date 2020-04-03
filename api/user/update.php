@@ -30,7 +30,7 @@
     if(isset($_GET['user_id']))
     {
         //IF HAS ID PARAMETER
-        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'user',
                 'min_range' => 1
@@ -41,7 +41,7 @@
         echo json_encode(array('message' => 'No User Found'));
     }
 
-    $user->user_id = $user_id;
+    // $user->user_id = $user_id;
 
 
     // Get raw posted data
@@ -62,7 +62,7 @@
             $decoded = JWT::decode($jwt, $key, array('HS256'));
                
             if($user->read()->rowCount() <= 0) {
-                echo json_encode(array('message' => 'No User Found with '.$user_id));
+                echo json_encode(array('Message' => 'No User Found with '.$user_id));
              // Update user
             } else if($decoded->data->id == $user_id && $user->update($user_id)) {
                 http_response_code(200);

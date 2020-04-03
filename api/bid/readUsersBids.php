@@ -37,7 +37,7 @@
         ]);
     }
     else{
-        echo json_encode(array('message' => 'No User id found'));
+        echo json_encode(array('Message' => 'No User id found'));
     }
 
     if($jwt) {
@@ -46,14 +46,6 @@
         try {
             // Decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
-
-            // //Checks if the bid belongs to this user
-            // if ($bid->userBidConfirm($user_id)->rowCount() <= 0 ){
-
-            //     echo json_encode(array('Message'=>'No Bids found with user id '.$user_id));
-
-            // // Checks with JWT token and update the bid
-            // } else
             
              if ($decoded->data->id == $user_id){
 
@@ -85,7 +77,7 @@
                     } else {
                         //No Bids Found
                         http_response_code(404);
-                        echo json_encode(array('message' => 'No Bid Found'));
+                        echo json_encode(array('Message' => 'No Bid Found'));
                     }
                 
             } else {
@@ -104,7 +96,7 @@
         
             // Show error message
             echo json_encode(array(
-                "message" => "Access denied.",
+                "Message" => "Access denied.",
                 "error" => $e->getMessage()
             ));
         }
