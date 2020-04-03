@@ -4,14 +4,14 @@
         private $conn;
         //private $table = 'users';
 
-        // Review Properties
+        // Bid Properties\
+        public $bid_id;
         public $amount; 
         public $estimatedTimeDays;
         public $estimatedTimeWeeks;
         public $estimatedTimeMonths; 
         public $estimatedTimeYears;
         public $message;
-
 
         public function __construct($db) {
             $this->conn = $db;
@@ -27,13 +27,8 @@
 
             //Clean data
             $this->amount = htmlspecialchars(strip_tags($this->amount));
-            // $this->estimatedTimeDays = htmlspecialchars(strip_tags($this->estimatedTimeDays));
-            // $this->estimatedTimeWeeks = htmlspecialchars(strip_tags($this->estimatedTimeWeeks));
-            // $this->estimatedTimeMonths = htmlspecialchars(strip_tags($this->estimatedTimeMonths));
-            // $this->estimatedTimeYears = htmlspecialchars(strip_tags($this->estimatedTimeYears));
             $this->message = htmlspecialchars(strip_tags($this->message));
             
-
             //Bind data
             $stmt->bindParam(':curUser', $userID, PDO::PARAM_INT);
             $stmt->bindParam(':curListing', $curListing, PDO::PARAM_INT);
@@ -56,8 +51,8 @@
         }
 
         // Get Bid Details
-        public function readBid($bidID) {
-            $query = "SELECT * FROM bids WHERE idbids = $bidID;";
+        public function readBid() {
+            $query = "SELECT * FROM bids WHERE idbids = $this->bid_id;";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);
@@ -68,6 +63,18 @@
             return $stmt;
         }
 
+        // Confirm user review
+        public function userBidConfirm($userID) {
+            $query = "SELECT * FROM bids b JOIN bid_listing bl ON bl.bids_idbids = b.idbids WHERE bl.users_idusers=$userID AND b.idbids =$this->bid_id";
+        
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
 
         // Get all bids on a Listing
         public function readListingBids($listingID) {
@@ -100,14 +107,14 @@
         }
 
         // Update a Bid
-        public function update($bidID){
+        public function update(){
             $query = "UPDATE bids SET amount = :amount,
                                             estimatedTimeDays = :estimatedTimeDays,
                                             estimatedTimeWeeks = :estimatedTimeWeeks,
                                             estimatedTimeMonths = :estimatedTimeMonths,
                                             estimatedTimeYears = :estimatedTimeYears,
                                             message = :message
-                                    WHERE idbids= $bidID";
+                                    WHERE idbids= $this->bid_id";
 
             $stmt = $this->conn->prepare($query);
 
@@ -135,9 +142,9 @@
         }
 
         // Delete a Bid
-        public function delete($bidID){
+        public function delete(){
             //Delete Query
-            $query = "CALL DeleteBid($bidID);";
+            $query = "CALL DeleteBid($this->bid_id);";
 
             $stmt = $this->conn->prepare($query);
 
