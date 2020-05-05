@@ -37,6 +37,7 @@
             ]
         ]);
     } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User Found'));
     }
 
@@ -62,7 +63,7 @@
                     extract($row);
             
                     $userData = array(
-                        'user_id' => $user_id,
+                        'user_id' => $idusers,
                         'username' => $username,
                         'email' => $email,
                         'firstname' => $firstname,
@@ -87,7 +88,7 @@
         
             // show error message
             echo json_encode(array(
-                "message" => "Access denied.",
+                "Message" => "Access denied.",
                 "error" => $e->getMessage()
             ));
         }

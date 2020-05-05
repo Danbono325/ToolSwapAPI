@@ -34,7 +34,6 @@
     $user_exists = $user->usernameExists();
 
     $user->password = $data->password;
-    $user->email = $data->email;
     $user->firstname = $data->firstname;
     $user->lastname = $data->lastname;
 
@@ -46,6 +45,10 @@
             if (!$email_exists) {
                 if(!$user_exists){
                     if($user->create()){
+
+                        // Just used to get the ID in the object
+                        $user->emailExists();
+
                         
                         $token = array(
                             "iss" => $iss,
@@ -68,7 +71,8 @@
                             echo json_encode(
                                     array(
                                         "Message" => "User Created",
-                                        "jwt" => $jwt
+                                        "jwt" => $jwt,
+                                        "user" => $user
                                     )
                                 );
                     } else {

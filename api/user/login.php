@@ -53,16 +53,13 @@
         echo json_encode(
                 array(
                     "Message" => "Successful login.",
-                    "jwt" => $jwt
+                    "jwt" => $jwt,
+                    "user" => $user
                 )
             );
     
     } else { // login failed
-    
-        // set response code
-        http_response_code(401);
-    
         // tell the user login failed
-        echo json_encode(array("Message" => "Login failed."));
+        echo json_encode(array("Message" => "Invalid Credentials."));
     }
 ?>

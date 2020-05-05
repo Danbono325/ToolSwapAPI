@@ -48,7 +48,7 @@
     $data = json_decode(file_get_contents("php://input"));
 
     $user->username = $data->username;
-    $user->password = $data->password;
+    // $user->password = $data->password;
     $user->email = $data->email;
     $user->firstname = $data->firstname;
     $user->lastname = $data->lastname;
@@ -64,8 +64,7 @@
             if($user->read()->rowCount() <= 0) {
                 echo json_encode(array('Message' => 'No User Found with '.$user_id));
              // Update user
-            } else if($decoded->data->id == $user_id && $user->update($user_id)) {
-                http_response_code(200);
+            } else if($decoded->data->id == $user->user_id && $user->update($user->user_id)) {
 
                 // re-generate jwt 
                 $token = array(
@@ -74,21 +73,20 @@
                     "iat" => $iat,
                     "nbf" => $nbf,
                     "data" => array(
-                        "id" => $user->id,
+                        "id" => $user->user_id,
                         "firstname" => $user->firstname,
                         "lastname" => $user->lastname,
                         "email" => $user->email
                     )
                 );
                 $jwt = JWT::encode($token, $key);
-
+                
                 http_response_code(200);
-
-
                 echo json_encode(
-                    array('Message' => 'User Updated', "jwt" => $jwt)
+                    array('Message' => 'User Updated', "jwt" => $jwt, "data" => $user)
                 );
             } else {
+
                 http_response_code(404);
 
                 echo json_encode(

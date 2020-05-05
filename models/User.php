@@ -31,6 +31,24 @@
             return $stmt;
         }
 
+        //Get User ID
+        public function getUserId() {
+            $query = "SELECT idusers FROM users WHERE email = ? LIMIT 0,1;";
+
+            //Prepared Statement
+            $stmt = $this->conn->prepare($query);
+
+            $this->email = htmlspecialchars(strip_tags($this->email));
+
+            $stmt->bindParam(1, $this->email);
+
+            //Execute
+            $stmt->execute();
+
+            return $stmt;
+        }
+
+
         // User Login
         public function emailExists() {
             $query = "SELECT *
@@ -82,7 +100,7 @@
 
             $stmt = $this->conn->prepare($query);
 
-            $this->email = htmlspecialchars(strip_tags($this->username));
+            $this->username = htmlspecialchars(strip_tags($this->username));
 
             $stmt->bindParam(1, $this->username);
  
@@ -148,24 +166,23 @@
         //Update user
         public function update($userID){
             $query = "UPDATE users SET username = :username,
-                                            password = :password,
                                             email = :email,
                                             firstname = :firstname,
                                             lastname = :lastname
-                                    WHERE idusers= $userID";
+                                    WHERE idusers = '$userID'";
 
             $stmt = $this->conn->prepare($query);
 
             //Clean data
             $this->username = htmlspecialchars(strip_tags($this->username));
-            $this->password = htmlspecialchars(strip_tags($this->password));
+            // $this->password = htmlspecialchars(strip_tags($this->password));
             $this->email = htmlspecialchars(strip_tags($this->email));
             $this->firstname = htmlspecialchars(strip_tags($this->firstname));
             $this->lastname = htmlspecialchars(strip_tags($this->lastname));
 
             //Bind data
             $stmt->bindParam(':username', $this->username);
-            $stmt->bindParam(':password', $this->password);
+            // $stmt->bindParam(':password', $this->password);
             $stmt->bindParam(':email', $this->email);
             $stmt->bindParam(':firstname', $this->firstname);
             $stmt->bindParam(':lastname', $this->lastname);
