@@ -67,7 +67,8 @@
                                 'estimatedTimeWeeks' => $estimatedTimeWeeks,
                                 'estimatedTimeMonths' => $estimatedTimeMonths,
                                 'estimatedTimeYears' => $estimatedTimeYears,
-                                'message' => $message
+                                'message' => $message,
+                                "listingID" => $listings_idlistings
                             );
                             array_push($bidsData['data'], $bidItem);
                         }

@@ -30,7 +30,7 @@
     $email_exists = $user->emailExists();
 
     // check if email exists and if password is correct
-    if($email_exists && $data->password == $user->password){
+    if($email_exists && SHA1($data->password) == $user->password){
         
         $token = array(
         "iss" => $iss,

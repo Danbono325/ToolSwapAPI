@@ -33,7 +33,7 @@
     $user->username = $data->username;
     $user_exists = $user->usernameExists();
 
-    $user->password = $data->password;
+    $user->password = SHA1($data->password);
     $user->firstname = $data->firstname;
     $user->lastname = $data->lastname;
 

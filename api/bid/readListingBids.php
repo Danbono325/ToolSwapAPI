@@ -71,7 +71,7 @@
             } else if ($decoded->data->id == $user_id){
 
                 // Listing bids Query
-                $result = $bid->readListingBids($listing_id);
+                $result = $bid->readListingBids($listing->idlistings);
 
                 $num = $result->rowCount();
 

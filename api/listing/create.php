@@ -51,7 +51,7 @@
 
     if($user->read()->rowCount() <= 0 ){
         echo json_encode(array('Message' => 'No User Found with '.$user_id));
-    } else if($listing->create($user_id)){
+    } else if($listing->create($user->user_id)){
         echo json_encode(
             array('Message'=>'Listing Created')
         );
