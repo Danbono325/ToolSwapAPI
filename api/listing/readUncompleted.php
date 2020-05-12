@@ -35,7 +35,8 @@
                 'expectedWeeks' => $expectedWeeks,
                 'expectedMonths' => $expectedMonths,
                 'expectedYears' => $expectedYears,
-                'completed' => $completed
+                'completed' => $completed,
+                'userID' => $users_idusers
             );
             array_push($listingsData['data'], $listingItem);
         }

@@ -22,7 +22,10 @@
         
         //Get Listings for home screen
         public function readAllUncompleted() {
-            $query = "SELECT * FROM listings where completed = 0;";
+            $query = "SELECT * FROM listings l 
+                        JOIN users_listings ul 
+                        ON ul.listings_idlistings = l.idlistings 
+                        WHERE l.completed = 0;";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);
@@ -48,7 +51,10 @@
 
         // Confirm user listing
         public function userListingConfirm($userID) {
-            $query = "SELECT * FROM listings l JOIN users_listings ul ON ul.listings_idlistings = l.idlistings WHERE ul.users_idusers=$userID AND l.idlistings = $this->idlistings LIMIT 0,1;";
+            $query = "SELECT * FROM listings l 
+                        JOIN users_listings ul 
+                        ON ul.listings_idlistings = l.idlistings 
+                        WHERE ul.users_idusers=$userID AND l.idlistings = $this->idlistings LIMIT 0,1;";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);

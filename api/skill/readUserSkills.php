@@ -19,7 +19,7 @@
     if(isset($_GET['user_id']))
     {
         //IF HAS ID PARAMETER
-        $userID = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'user',
                 'min_range' => 1
@@ -31,7 +31,7 @@
     }
 
     //Review Query
-    $result = $skill->readUserSkills($userID);
+    $result = $skill->readUserSkills($user->user_id);
 
     $num = $result->rowCount();
 

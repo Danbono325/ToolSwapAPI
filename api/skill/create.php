@@ -31,7 +31,7 @@
      // CHECK GET ID PARAMETER OR NOT
      if(isset($_GET['user_id'])) {
          //IF HAS ID PARAMETER
-         $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+         $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
              'options' => [
                  'default' => 'user',
                  'min_range' => 1
@@ -56,10 +56,10 @@
             $skill->description = $data->description;
 
             
-            if($decoded->data->id == $user_id && $user->read($user_id)->rowCount() <= 0) {
+            if($decoded->data->id == $user->user_id && $user->read()->rowCount() <= 0) {
                 echo json_encode(array('message' => 'No User Found with '.$user_id));
             // Check user and Add Skill
-            } else if($decoded->data->id == $user_id && $skill->addSkill($user_id)){
+            } else if($decoded->data->id == $user->user_id && $skill->addSkill($user->user_id)){
 
                 http_response_code(200);
 

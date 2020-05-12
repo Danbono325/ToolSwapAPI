@@ -48,7 +48,6 @@
     $data = json_decode(file_get_contents("php://input"));
 
     $user->username = $data->username;
-    // $user->password = $data->password;
     $user->email = $data->email;
     $user->firstname = $data->firstname;
     $user->lastname = $data->lastname;

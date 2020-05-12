@@ -34,16 +34,19 @@
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
-        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+        $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
             'options' => [
                 'default' => 'user',
                 'min_range' => 1
             ]
         ]);
     }
-    else{
+    else {
         echo json_encode(array('message' => 'No User Found'));
     }
+
+    // Get raw posted data
+    $data = json_decode(file_get_contents("php://input")); 
 
     if($jwt) {
     
@@ -56,11 +59,11 @@
             $skill->description = $data->description;
 
             
-            if($user->read($user_id)->rowCount() <= 0) {
+            if($user->read()->rowCount() <= 0) {
 
-                echo json_encode(array('message' => 'No User Found with '.$user_id));
+                echo json_encode(array('message' => 'No User Found with '.$user->user_id));
                 // Check user and Delete Skill
-            } else if($decoded->data->id == $user_id && $skill->removeSkill($user_id)) {
+            } else if($decoded->data->id == $user->user_id && $skill->removeSkill($user->user_id)) {
 
                 http_response_code(200);
 
