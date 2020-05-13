@@ -51,9 +51,9 @@
 
         echo json_encode($skillsData);
     } else {
-        //No Listings Found
-        http_response_code(404);
+        // No Skills Found
+        http_response_code(200);
 
-        echo json_encode(array('Message' => 'No Skills Found'));
+        echo json_encode($skillsData);
     }
 ?>

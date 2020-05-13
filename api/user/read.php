@@ -43,7 +43,7 @@ if($num > 0){
         extract($row);
 
         $userData = array(
-            'user_id' => $user_id,
+            'user_id' => $idusers,
             'username' => $username,
             'email' => $email,
             'firstname' => $firstname,

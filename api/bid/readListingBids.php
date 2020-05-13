@@ -96,10 +96,10 @@
                     http_response_code(200);  
                     echo json_encode($bidsData);
                 } else {
-                    http_response_code(404);  
-
                     //No bids found
-                    echo json_encode(array('Message' => 'No Bids Found'));
+                    http_response_code(200);  
+
+                    echo json_encode($bidsData);
                 }
                 
             } else {
