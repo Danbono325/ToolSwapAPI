@@ -26,8 +26,8 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No Review Found'));
     }
 
@@ -57,9 +57,6 @@
 
         echo json_encode($reviewsData);
     } else {
-        //No Review Found
-        http_response_code(404);
-
         echo json_encode(array('Message' => 'No Review Found'));
     }
 ?>

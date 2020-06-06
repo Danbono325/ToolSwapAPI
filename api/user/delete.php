@@ -37,10 +37,9 @@
             ]
         ]);
     } else {
+        http_response_code(404);
         echo json_encode(array('message' => 'No User Found'));
     }
-
-    // $user->user_id = $user_id;
 
     // if jwt is not empty
     if($jwt) {

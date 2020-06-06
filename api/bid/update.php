@@ -47,9 +47,13 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    }
-    else {
+        } else {
+            http_response_code(404);
+            echo json_encode(array('Message' => 'No Review or User Found'));
+        }
+    } else {
+        http_response_code(404);
+        
         echo json_encode(array('Message' => 'No Review or User Found'));
     }
 
@@ -75,17 +79,16 @@
             //Checks if the bid belongs to this user
             if ($bid->userBidConfirm($user_id)->rowCount() <= 0 ){
 
-                echo json_encode(array('Message'=>'No Bid Listing found with '.$bid_id));
+                echo json_encode(array('Message'=>'No Bid Listing found with '.$bid->bid_id));
 
             // Checks with JWT token and update the bid
             } else if ($decoded->data->id == $user_id && $bid->update()){
                 http_response_code(200);
                 
                 echo json_encode(
-                    array('Message'=>'Bid updated')
+                    array('Message'=>'Bid Updated')
                 );
             } else {
-                http_response_code(404);
 
                 echo json_encode(
                     array('Message'=> 'Bid not Updated')

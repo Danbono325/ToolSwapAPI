@@ -26,8 +26,8 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No Listing Found'));
     }
 
@@ -56,8 +56,6 @@
         echo json_encode($reviewsData);
     } else {
         //No Reviews Found
-        http_response_code(200);
-
         echo json_encode($reviewsData);
     }
 ?>

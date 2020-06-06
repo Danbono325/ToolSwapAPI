@@ -46,10 +46,13 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    }
-    else {
-        echo json_encode(array('Message' => 'No Review or User Found'));
+        } else {
+            http_response_code(404);
+            echo json_encode(array('Message' => 'No Bid Found'));
+        }
+    } else {
+        http_response_code(404);
+        echo json_encode(array('Message' => 'No User Found'));
     }
 
     //$bid->bid_id = $bid_id;
@@ -64,20 +67,18 @@
             //Checks if the bid belongs to this user
             if ($bid->userBidConfirm($user_id)->rowCount() <= 0 ){
 
-                echo json_encode(array('Message'=>'No Bid found with id '.$bid_id));
+                echo json_encode(array('Message'=>'No Bid found with id '.$bid->bid_id));
 
             // Checks with JWT token and update the bid
             } else if ($decoded->data->id == $user_id && $bid->delete()){
                 http_response_code(200);
                 
                 echo json_encode(
-                    array('Message'=>'Bid delete')
+                    array('Message'=>'Bid Deleted')
                 );
             } else {
-                http_response_code(404);
-
                 echo json_encode(
-                    array('Message'=> 'Bid not deleted')
+                    array('Message'=> 'Bid Not Deleted')
                 );
             }
 

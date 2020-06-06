@@ -31,31 +31,32 @@
     $listing = new Listing($conn);
 
 
-     // CHECK GET ID PARAMETER OR NOT
-     if(isset($_GET['user_id'])){
-         //IF HAS ID PARAMETER
-         $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
-             'options' => [
-                 'default' => 'user',
-                 'min_range' => 1
-             ]
-         ]);
+    if(isset($_GET['user_id'])){
+        //IF HAS ID PARAMETER
+        $user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
+            'options' => [
+                'default' => 'user',
+                'min_range' => 1
+            ]
+        ]);
 
-         if(isset($_GET['listing_id'])){
-            //IF HAS ID PARAMETER
-            $listing->idlistings = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
-                'options' => [
-                    'default' => 'listing',
-                    'min_range' => 1
-                ]
-            ]);
-        }
-     }
-     else {
-         echo json_encode(array('message' => 'No Listing or User Found'));
-     }
-
-    //  $listing->idlistings = $listing_id;
+        if(isset($_GET['listing_id'])){
+           //IF HAS ID PARAMETER
+           $listing->idlistings = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+               'options' => [
+                   'default' => 'listing',
+                   'min_range' => 1
+               ]
+           ]);
+       } else {
+        http_response_code(404);
+        echo json_encode(array('Message' => 'No Listing Found'));
+    }
+    }
+    else {
+        http_response_code(404);
+        echo json_encode(array('Message' => 'No User Found'));
+    }
 
      if($jwt) {
     
@@ -73,7 +74,6 @@
             $review->budgetScore = $data->budgetScore;
             $review->description = $data->description;
 
-
             // Create Review
             if ($listing->userListingConfirm($user_id)->rowCount() <= 0 ){
                 echo json_encode(array('Message'=>'No Listing found with '.$listing_id));
@@ -84,8 +84,6 @@
                     array('Message'=>'Review Created')
                 );
             } else {
-                http_response_code(404);
-
                 echo json_encode(
                     array('Message'=> 'Review not Created')
                 );

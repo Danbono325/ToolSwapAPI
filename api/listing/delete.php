@@ -44,11 +44,11 @@
                ]
            ]);
         } else {
+            http_response_code(404);
             echo json_encode(array('Message' => 'No Listing Found'));
         }
-
-    }
-    else {
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User Found'));
     }
 
@@ -65,7 +65,7 @@
 
             if($listing->userListingConfirm($user_id)->rowCount() <= 0) {
 
-                echo json_encode(array('message' => 'No listing Found with '.$listing_id));
+                echo json_encode(array('message' => 'No listing Found with '.$listing->idlistings));
                 // Check user and Delete Listing
             } else if($decoded->data->id == $user_id && $listing->delete()) {
 
@@ -76,9 +76,8 @@
                 );
 
             } else {
-                http_response_code(404);
                 echo json_encode(
-                    array('Message'=> 'Listing not Found')
+                    array('Message'=> 'Listing not Deleted')
                 );
             }
 

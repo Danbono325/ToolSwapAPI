@@ -25,8 +25,8 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No user found'));
     }
 
@@ -52,8 +52,6 @@
         echo json_encode($skillsData);
     } else {
         // No Skills Found
-        http_response_code(200);
-
         echo json_encode($skillsData);
     }
 ?>

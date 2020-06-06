@@ -26,7 +26,6 @@
     //Instantiate listing object
     $listing = new Listing($conn);
 
-
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
@@ -46,11 +45,11 @@
                ]
            ]);
         } else {
+            http_response_code(404);
             echo json_encode(array('Message' => 'No Listing Found'));
         }
-
-    }
-    else {
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User Found'));
     }
 
@@ -60,10 +59,8 @@
     
         // If decode succeed, check if its the right user and delete
         try {
-    
             // Decode jwt
             $decoded = JWT::decode($jwt, $key, array('HS256'));
-
 
             // Update listing
             if ($listing->userListingConfirm($user_id)->rowCount() <= 0 ){
@@ -75,8 +72,6 @@
                     array('Message'=>'Listing Updated as Complete')
                 );
             } else {
-                http_response_code(404);
-
                 echo json_encode(
                     array('Message'=> 'Listing not Updated as Completed')
                 );

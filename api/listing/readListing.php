@@ -25,12 +25,10 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No Listing Found for listing '.$listing_id));
     }
-
-    // $listing->idlistings = $listing_id;
 
     // Listing Query
     $result = $listing->readListing();
@@ -51,7 +49,8 @@
                 'expectedWeeks' => $expectedWeeks,
                 'expectedMonths' => $expectedMonths,
                 'expectedYears' => $expectedYears,
-                'completed' => $completed
+                'completed' => $completed,
+                'userID' => $users_idusers
             );
             array_push($listingsData['data'], $listingItem);
         }
@@ -62,6 +61,6 @@
         //No Listing Found
         http_response_code(404);
 
-        echo json_encode(array('Message' => 'No Listings Found'));
+        echo json_encode(array('Message' => 'No Listing Found'));
     }
 ?>

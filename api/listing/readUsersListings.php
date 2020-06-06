@@ -6,7 +6,6 @@
     header("Access-Control-Allow-Credentials: true");
     header("Content-Type: application/json; charset=UTF-8");
 
-
     include_once '../../config/Database.php';
     include_once '../../models/Listing.php';
 
@@ -25,8 +24,8 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No Listings Found'));
     }
 

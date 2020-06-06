@@ -35,8 +35,8 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User id found'));
     }
 
@@ -76,14 +76,10 @@
 
                         echo json_encode($bidsData);
                     } else {
-                        http_response_code(200);
-
                         echo json_encode($bidsData);
                     }
                 
             } else {
-                http_response_code(401);
-
                 echo json_encode(
                     array('Message'=> 'Not your listing\'s bids')
                 );

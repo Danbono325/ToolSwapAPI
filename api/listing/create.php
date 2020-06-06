@@ -7,8 +7,6 @@
     header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, 
             Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
 
-
-
     include_once '../../config/Database.php';
     include_once '../../models/Listing.php';
     include_once '../../models/User.php';
@@ -21,7 +19,6 @@
     $listing = new Listing($conn);
     $user = new User($conn);
 
-
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
         $user->user_id = filter_var($_GET['user_id'], FILTER_VALIDATE_INT,[
@@ -30,9 +27,8 @@
                 'min_range' => 1
             ]
         ]);
-
-    }
-    else {
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User Found'));
     }
 

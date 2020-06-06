@@ -38,7 +38,10 @@
 
         // Get Listing Details
         public function readListing() {
-            $query = "SELECT * FROM listings WHERE idlistings = $this->idlistings;";
+            $query = "SELECT * FROM listings l 
+                        JOIN users_listings ul 
+                        ON ul.listings_idlistings = l.idlistings 
+                        WHERE l.idlistings =  $this->idlistings;";
         
             //Prepared Statement
             $stmt = $this->conn->prepare($query);

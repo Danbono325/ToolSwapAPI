@@ -46,16 +46,14 @@
                ]
            ]);
         } else {
+            http_response_code(404);
             echo json_encode(array('Message' => 'No Listing Found'));
         }
 
-    }
-    else {
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User Found'));
     }
-
-    // $listing->idlistings = $listing_id;
-
 
     if($jwt) {
     
@@ -87,8 +85,6 @@
                     array('Message'=>'Listing Updated')
                 );
             } else {
-                http_response_code(404);
-
                 echo json_encode(
                     array('Message'=> 'Listing not Updated')
                 );
@@ -111,5 +107,4 @@
 
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
-
 ?>

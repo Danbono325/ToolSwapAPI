@@ -56,8 +56,6 @@
         echo json_encode($reviewsData);
     } else {
         //No Reivews Found
-        http_response_code(200);
-
         echo json_encode($reviewsData);
     }
 ?>

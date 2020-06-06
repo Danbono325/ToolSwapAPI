@@ -44,18 +44,18 @@
 
         if(isset($_GET['listing_id'])){
            //IF HAS ID PARAMETER
-           $listing_id = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
+           $listing->idlistings = filter_var($_GET['listing_id'], FILTER_VALIDATE_INT,[
                'options' => [
                    'default' => 'listing',
                    'min_range' => 1
                ]
            ]);
-       } else {
-        echo json_encode(array('Message' => 'No Listing Found'));
-    }
-
-    }
-    else {
+        } else {
+            http_response_code(404);
+            echo json_encode(array('Message' => 'No Listing Found'));
+        }
+    } else {
+        http_response_code(404);
         echo json_encode(array('Message' => 'No User Found'));
     }
 
@@ -77,8 +77,7 @@
             $bid->estimatedTimeYears = $data->estimatedTimeYears;
             $bid->message = $data->message;
 
-            $user->user_id = $user_id;
-            $listing->idlistings = $listing_id;
+            // Check for existence of user and listing
             $result = $user->read();
             $result2 = $listing->readListing();
 
@@ -91,6 +90,7 @@
                 echo json_encode(array('Message'=>'No Listing found with '.$listing_id));
 
             } else if($decoded->data->id == $user_id && $bid->create($user_id, $listing_id)){
+                http_response_code(200);
 
                 echo json_encode(array('Message'=>'Bid Created'));
 

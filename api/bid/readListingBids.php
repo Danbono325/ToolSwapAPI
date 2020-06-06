@@ -46,14 +46,12 @@
                 'min_range' => 1
             ]
         ]);
+        } else {
+            echo json_encode(array('Message' => 'No Listing Found'));
+        }
+    } else {
+        echo json_encode(array('Message' => 'No User Found'));
     }
-    }
-    else {
-        echo json_encode(array('Message' => 'No Listing or User Found'));
-    }
-
-    // $listing->idlistings = $listing_id;
-
 
     if($jwt) {
 
@@ -97,14 +95,10 @@
                     echo json_encode($bidsData);
                 } else {
                     //No bids found
-                    http_response_code(200);  
-
                     echo json_encode($bidsData);
                 }
                 
             } else {
-                http_response_code(401);
-
                 echo json_encode(
                     array('Message'=> 'Not your listing\'s bids')
                 );

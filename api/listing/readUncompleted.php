@@ -15,7 +15,6 @@
 
     $listing = new Listing($conn);
 
-
     //Uncompleted Listings Query
     $result = $listing->readAllUncompleted();
 

@@ -44,11 +44,17 @@
                 'min_range' => 1
             ]
         ]);
-    }
+        } else {
+            http_response_code(404);
+            echo json_encode(array('Message' => 'No Review Found'));
+        }
     }
     else {
-        echo json_encode(array('Message' => 'No Review or User Found'));
+        http_response_code(404);
+        echo json_encode(array('Message' => 'No User Found'));
     }
+
+    
 
     // $review->review_id = $review_id;
 

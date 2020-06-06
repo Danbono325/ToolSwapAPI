@@ -40,17 +40,18 @@
         ]);
 
         if(isset($_GET['review_id'])){
-        //IF HAS ID PARAMETER
-        $review->review_id = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
-            'options' => [
-                'default' => 'listing',
-                'min_range' => 1
-            ]
-        ]);
-    }
-    }
-    else {
-        echo json_encode(array('message' => 'No Review or User Found'));
+            //IF HAS ID PARAMETER
+            $review->review_id = filter_var($_GET['review_id'], FILTER_VALIDATE_INT,[
+                'options' => [
+                    'default' => 'listing',
+                    'min_range' => 1
+                ]
+            ]);
+        } else {
+            echo json_encode(array('message' => 'No Review Found'));
+        }
+    } else {
+        echo json_encode(array('message' => 'No User Found'));
     }
 
     // $review->review_id = $review_id;
@@ -73,7 +74,7 @@
             //Checks if the review belongs to this user
             if ($review->userReviewConfirm($user_id)->rowCount() <= 0 ){
 
-                echo json_encode(array('Message'=>'No Review Listing found with '.$review_id));
+                echo json_encode(array('Message'=>'No Review Listing found with '.$review->review_id));
 
             // Checks with JWT token and Delete's Review
             } else if ($decoded->data->id == $user_id && $review->update()){
@@ -83,8 +84,6 @@
                     array('Message'=>'Review updated')
                 );
             } else {
-                http_response_code(404);
-
                 echo json_encode(
                     array('Message'=> 'Review not Updated')
                 );

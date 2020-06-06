@@ -7,8 +7,6 @@
     header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, 
             Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
 
-
-
     include_once '../../config/Database.php';
     include_once '../../models/Skill.php';
     include_once '../../models/User.php';
@@ -30,7 +28,6 @@
     $skill = new Skill($conn);
     $user = new User($conn);
 
-
     // CHECK GET ID PARAMETER OR NOT
     if(isset($_GET['user_id'])){
         //IF HAS ID PARAMETER
@@ -40,8 +37,9 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else {
+    } else {
+        http_response_code(404);
+
         echo json_encode(array('message' => 'No User Found'));
     }
 
@@ -68,13 +66,13 @@
                 http_response_code(200);
 
                 echo json_encode(
-                    array('Message'=>'Skill Deleted')
+                    array('Message'=>'Skill Removed')
                 );
 
             } else {
                 
                 echo json_encode(
-                    array('Message'=> 'Skill not Deleted')
+                    array('Message'=> 'Skill not Removed')
                 );
             }
 
@@ -91,6 +89,7 @@
             ));
         }
     } else {
+        http_response_code(401);
         echo json_encode(array("Message" => "Not authorized no token found"));
     }
 ?>

@@ -44,13 +44,15 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    }
-    else {
-        echo json_encode(array('message' => 'No Bid or User Found'));
+        } else {
+            http_response_code(404);
+            echo json_encode(array('message' => 'No Bid Found'));
+        }
+    } else {
+        http_response_code(404);
+        echo json_encode(array('message' => 'No User Found'));
     }
 
-    //$bid->bid_id = $bid_id;
 
     if($jwt) {
 
@@ -93,15 +95,11 @@
 
                     echo json_encode($bidsData);
                 } else {
-                    http_response_code(404);
-
                     //No Bid Found
                     echo json_encode(array('Message' => 'No Bids Found'));
                 }
                 
             } else {
-                http_response_code(401);
-
                 echo json_encode(
                     array('Message'=> 'Not your listing\'s bids')
                 );

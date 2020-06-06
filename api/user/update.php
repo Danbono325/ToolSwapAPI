@@ -36,8 +36,8 @@
                 'min_range' => 1
             ]
         ]);
-    }
-    else{
+    } else {
+        http_response_code(404);
         echo json_encode(array('message' => 'No User Found'));
     }
 
